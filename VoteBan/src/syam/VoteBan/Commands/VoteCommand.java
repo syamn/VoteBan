@@ -104,6 +104,7 @@ public class VoteCommand implements CommandExecutor{
 				plugin.votes.put(target.getName(), vote);
 
 				vote.start();
+				return true;
 			}
 		}
 

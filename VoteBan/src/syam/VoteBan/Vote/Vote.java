@@ -26,7 +26,7 @@ public class Vote {
 	private int remaining; // 残り時間
 	private boolean started = false; // スタートしているかどうか
 
-	public HashMap<Player, VoteOption> voters; // 投票者一覧
+	public HashMap<Player, VoteOption> voters = new HashMap<Player, VoteOption>(); // 投票者一覧
 
 	// 最終カウンタ
 	int yes = 0;	// VoteOption.YES
