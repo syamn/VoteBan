@@ -1,0 +1,8 @@
+# VoteBan Configuration file
+# @author syam <admin@sakura-server.net>
+
+#==================#
+#   Basic Config   #
+#==================#
+# Default time for waiting votes (default: 3)
+VoteTimeInMinutes: 3

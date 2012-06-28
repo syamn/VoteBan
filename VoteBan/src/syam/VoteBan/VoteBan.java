@@ -14,6 +14,7 @@ public class VoteBan extends JavaPlugin{
 	// Listener
 
 	// Private classes
+	private ConfigurationManager config;
 
 	// Instance
 	private static VoteBan instance;
@@ -23,6 +24,19 @@ public class VoteBan extends JavaPlugin{
 	 */
 	public void onEnable(){
 		instance = this;
+		config = new ConfigurationManager(this);
+
+		// 設定読み込み
+		try{
+			config.loadConfig(true);
+		}catch (Exception ex){
+			log.warning(logPrefix+"an error occured while trying to load the config file.");
+			ex.printStackTrace();
+		}
+
+		// コマンド登録
+		getServer().getPluginCommand("vote").setExecutor(new VoteBanCommand(this));
+		log.info(logPrefix+ "Initialized Command.");
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
@@ -38,6 +52,15 @@ public class VoteBan extends JavaPlugin{
 	}
 
 	/* getter */
+
+	/**
+	 * 設定マネージャを返す
+	 * @return ConfigurationManager
+	 */
+	public ConfigurationManager getConfigs(){
+		return config;
+	}
+
 	/**
 	 * インスタンスを返す
 	 * @return VoteBanインスタンス
