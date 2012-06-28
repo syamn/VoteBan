@@ -12,11 +12,13 @@ commands:
       usage: /vote - to see the help
       aliases: [vo]
       description: To see the BanVote help.
-    yes:
-      usage: /yes - to vote Yes
+    yesvote:
+      usage: /yesvote - to vote Yes
+      aliases: [y]
       description: Vote Command. Vote for YES
-    no:
-      usage: /no - to vote No
+    novote:
+      usage: /novote - to vote Yes
+      aliases: [n]
       description: Vote Command. Vote for NO
 permissions:
     banvote.admin:

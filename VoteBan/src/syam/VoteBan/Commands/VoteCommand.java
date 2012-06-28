@@ -45,7 +45,7 @@ public class VoteCommand implements CommandExecutor{
 		}
 
 		// vote ban (player) (reason) - BAN投票開始
-		if (args.length >= 2 && args[0].equalsIgnoreCase("ban")){
+		if (args.length >= 2){
 			// このif文だけで複数の投票種類に対応させる
 			VoteType type = null;
 			for (VoteType vt : VoteType.values()){
@@ -53,61 +53,58 @@ public class VoteCommand implements CommandExecutor{
 					type = vt;
 				}
 			}
-			// 未定義の投票種類
-			if (type == null){
-				Actions.message(sender, null, "&c未定義の投票種類です！");
-				return true;
-			}
 
-			// コンソールチェック
-			if (!(sender instanceof Player)){
-				Actions.message(sender, null, "&cThis command cannot use from console!");
-				return true;
-			}
-			Player player = (Player)sender;
-			// 権限チェック
-			if (!sender.hasPermission("banvote.startvote.ban")){
-				Actions.message(sender, null, "&cYou don't have permission to use this!");
-				return true;
-			}
-			// 引数チェック
-			if (args.length < 3){
-				Actions.message(sender, null, "&c理由を記入してください！");
-				return true;
-			}
+			if (type != null){
+				// コンソールチェック
+				if (!(sender instanceof Player)){
+					Actions.message(sender, null, "&cThis command cannot use from console!");
+					return true;
+				}
+				Player player = (Player)sender;
+				// 権限チェック
+				if (!sender.hasPermission("banvote.startvote.ban")){
+					Actions.message(sender, null, "&cYou don't have permission to use this!");
+					return true;
+				}
+				// 引数チェック
+				if (args.length < 3){
+					Actions.message(sender, null, "&c理由を記入してください！");
+					return true;
+				}
 
-			// 対象プレイヤーチェック
-			OfflinePlayer checkTarget = Bukkit.getServer().getOfflinePlayer(args[1]);
-			if (!checkTarget.isOnline()){
-				Actions.message(sender, null, "&cそのプレイヤーはオフラインです！");
-				return true;
+				// 対象プレイヤーチェック
+				OfflinePlayer checkTarget = Bukkit.getServer().getOfflinePlayer(args[1]);
+				if (!checkTarget.isOnline()){
+					Actions.message(sender, null, "&cそのプレイヤーはオフラインです！");
+					return true;
+				}
+
+				Player target = (Player)checkTarget;
+				// 理由メッセージ結合
+				String reason = args[2];
+				int len = args.length;
+				for (int i = 4; len >= i; i++){
+					reason = reason + " " + args[i-1];
+				}
+
+				// 既にそのプレイヤーへの投票が進行中でないかチェック
+				if (plugin.votes.containsKey(target.getName())){
+					Actions.message(sender, null, "&cそのプレイヤーへの投票は既に進行中です！");
+					return true;
+				}
+
+				// TODO: 開発後このチェックを削除する
+				if (plugin.votes.size() > 0){
+					Actions.message(sender, null, "&c既に進行中の投票があります！投票の進行には未対応です！");
+					return true;
+				}
+
+				// 新規投票の開始
+				Vote vote = new Vote(plugin, target, player, reason, type);
+				plugin.votes.put(target.getName(), vote);
+
+				vote.start();
 			}
-
-			Player target = (Player)checkTarget;
-			// 理由メッセージ結合
-			String reason = args[2];
-			int len = args.length;
-			for (int i = 4; len >= i; i++){
-				reason = reason + " " + args[i-1];
-			}
-
-			// 既にそのプレイヤーへの投票が進行中でないかチェック
-			if (plugin.votes.containsKey(target.getName())){
-				Actions.message(sender, null, "&cそのプレイヤーへの投票は既に進行中です！");
-				return true;
-			}
-
-			// TODO: 開発後このチェックを削除する
-			if (plugin.votes.size() > 0){
-				Actions.message(sender, null, "&c既に進行中の投票があります！投票の進行には未対応です！");
-				return true;
-			}
-
-			// 新規投票の開始
-			Vote vote = new Vote(plugin, target, player, reason, type);
-			plugin.votes.put(target.getName(), vote);
-
-			vote.start();
 		}
 
 		// コマンドヘルプを表示

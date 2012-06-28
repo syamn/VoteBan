@@ -26,7 +26,7 @@ public class VoteBan extends JavaPlugin{
 	private BanHandler banHandler;
 
 	// Public variable
-	public HashMap<String, Vote> votes;
+	public HashMap<String, Vote> votes = new HashMap<String, Vote>();
 
 	// Instance
 	private static VoteBan instance;
@@ -48,8 +48,8 @@ public class VoteBan extends JavaPlugin{
 
 		// コマンド登録
 		getServer().getPluginCommand("vote").setExecutor(new VoteCommand(this));
-		getServer().getPluginCommand("yes").setExecutor(new YesCommand(this));
-		getServer().getPluginCommand("no").setExecutor(new NoCommand(this));
+		getServer().getPluginCommand("yesvote").setExecutor(new YesCommand(this));
+		getServer().getPluginCommand("novote").setExecutor(new NoCommand(this));
 		log.info(logPrefix+ "Initialized Command.");
 
 		// BANを行うプラグインの決定とハンドラ初期化
