@@ -1,0 +1,4 @@
+VoteBan
+=======
+
+CraftBukkit plugin
