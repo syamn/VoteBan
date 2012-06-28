@@ -20,7 +20,7 @@ public class Vote {
 	private Player target; // 投票対象のプレイヤー
 	private Player starter; // 投票を開始したプレイヤー
 	private String reason; // 投票を開始した理由
-	private VoteType type; // 投票の種類
+	private final VoteType type; // 投票の種類
 
 	private int time; // 投票時間
 	private int remaining; // 残り時間
@@ -66,6 +66,27 @@ public class Vote {
 	}
 
 	/**
+	 * プレイヤーが投票可能かチェックする
+	 * @param player チェック対象のプレイヤー
+	 * @return trueなら投票可能、falseなら不可能
+	 */
+	public boolean canVote(Player player){
+		if (target == player){
+			Actions.message(null, player, "&c自分自身の投票に参加することはできません");
+			return false;
+		}
+		// TODO: 権限チェックを追加、投票可能者数で最終決定のパーセンテージを取る
+
+		if (voters.containsKey(player)){
+			Actions.message(null, player, "&cあなたは既に投票しています！");
+			return false;
+		}
+
+		// 投票可能
+		return true;
+	}
+
+	/**
 	 * 投票者をチェックして、達しているか判定する
 	 */
 	public void checkvotes(){
@@ -103,29 +124,37 @@ public class Vote {
 	 */
 	private void finished(VoteResult result){
 		// 結果の処理
-		if (result == VoteResult.DENIED){
-			// メッセージ表示
-			Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は削除されました");
-			Actions.broadcastMessage(" &d投票理由: &f"+reason);
-			Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+		switch(result){
+			// 拒否
+			case DENIED:
+				// メッセージ表示
+				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は拒否されました");
+				Actions.broadcastMessage(" &d投票理由: &f"+reason);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
-			// 投票不成立 何もしない
+				// 投票不成立 何もしない
+				break;
 
-		}else if(result == VoteResult.ACCEPTED){
-			// メッセージ表示
-			Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
-			Actions.broadcastMessage(" &d投票理由: &f"+reason);
-			Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+			// 成立
+			case ACCEPTED:
+				// メッセージ表示
+				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
+				Actions.broadcastMessage(" &d投票理由: &f"+reason);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
-			// 投票成立 投票種類によって処理を行う
+				// 投票成立 投票種類によって処理を行う
+				accepted();
+				break;
 
-		}else{
-			// メッセージ表示
-			Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
-			Actions.broadcastMessage(" &d投票理由: &f"+reason);
-			Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+			// キャンセル
+			case CANCELLED:
+				// メッセージ表示
+				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
+				Actions.broadcastMessage(" &d投票理由: &f"+reason);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
-			// 投票キャンセル 何もしない
+				// 投票キャンセル 何もしない
+				break;
 		}
 
 		// 終了
@@ -136,7 +165,21 @@ public class Vote {
 	 * 投票成立時の処理を行う
 	 */
 	public void accepted(){
+		switch (type){
+			// BAN
+			case BAN:
+				plugin.getBansHandler().ban(target, starter.getName(), reason);
+				break;
 
+			// Kick
+			case KICK:
+				// オンラインチェックを行う
+				if (target == null || !target.isOnline()){
+					break;
+				}
+				plugin.getBansHandler().kick(target, starter.getName(), reason);
+				break;
+		}
 	}
 
 	/**

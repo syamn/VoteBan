@@ -6,3 +6,5 @@
 #==================#
 # Default time for waiting votes (default: 180)
 VoteTimeInSeconds: 30
+# Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
+GlobalBan: false

@@ -1,4 +1,4 @@
-package syam.VoteBan;
+package syam.VoteBan.Commands;
 
 import java.util.logging.Logger;
 
@@ -9,16 +9,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import syam.VoteBan.Actions;
+import syam.VoteBan.VoteBan;
 import syam.VoteBan.Vote.Vote;
 import syam.VoteBan.Vote.VoteType;
 
-public class VoteBanCommand implements CommandExecutor{
+public class VoteCommand implements CommandExecutor{
 	public final static Logger log = VoteBan.log;
 	public final static String logPrefix = VoteBan.logPrefix;
 	public final static String msgPrefix = VoteBan.msgPrefix;
 
 	private final VoteBan plugin;
-	public VoteBanCommand(final VoteBan plugin){
+	public VoteCommand(final VoteBan plugin){
 		this.plugin = plugin;
 	}
 
@@ -44,6 +46,19 @@ public class VoteBanCommand implements CommandExecutor{
 
 		// vote ban (player) (reason) - BAN投票開始
 		if (args.length >= 2 && args[0].equalsIgnoreCase("ban")){
+			// このif文だけで複数の投票種類に対応させる
+			VoteType type = null;
+			for (VoteType vt : VoteType.values()){
+				if (args[0].equalsIgnoreCase(vt.name().toLowerCase())){
+					type = vt;
+				}
+			}
+			// 未定義の投票種類
+			if (type == null){
+				Actions.message(sender, null, "&c未定義の投票種類です！");
+				return true;
+			}
+
 			// コンソールチェック
 			if (!(sender instanceof Player)){
 				Actions.message(sender, null, "&cThis command cannot use from console!");
@@ -82,8 +97,14 @@ public class VoteBanCommand implements CommandExecutor{
 				return true;
 			}
 
+			// TODO: 開発後このチェックを削除する
+			if (plugin.votes.size() > 0){
+				Actions.message(sender, null, "&c既に進行中の投票があります！投票の進行には未対応です！");
+				return true;
+			}
+
 			// 新規投票の開始
-			Vote vote = new Vote(plugin, target, player, reason, VoteType.BAN);
+			Vote vote = new Vote(plugin, target, player, reason, type);
 			plugin.votes.put(target.getName(), vote);
 
 			vote.start();
@@ -93,7 +114,12 @@ public class VoteBanCommand implements CommandExecutor{
 		Actions.message(sender, null, "&c===================================");
 		Actions.message(sender, null, "&bVoteBan Plugin version &3%version &bby syamn");
 		Actions.message(sender, null, " &b<>&f = required, &b[]&f = optional");
-		Actions.message(sender, null, " /vote reload &7- &fReloading config.yml");
+		Actions.message(sender, null, " /vote ban (name) (reason) &7- &fBan Voting");
+		Actions.message(sender, null, " /vote kick (name) (reason) &7- &Kick Voting");
+		Actions.message(sender, null, " /no &7- &fVoting for NO");
+		Actions.message(sender, null, " /yes &7- &fVoting for YES");
+		Actions.message(sender, null, " /no &7- &fVoting for NO");
+		Actions.message(sender, null, " &7/vote reload - &fReloading config.yml");
 		Actions.message(sender, null, "&c===================================");
 
 		return true;

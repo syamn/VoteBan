@@ -4,6 +4,7 @@ version: 0.1
 main: syam.VoteBan.VoteBan
 description: Vote for Banning Griefer!
 website: http://sakura-server.net/
+softdepend: [MCBans]
 ##  Original Author     ##
 author: syam
 commands:
@@ -11,6 +12,12 @@ commands:
       usage: /vote - to see the help
       aliases: [vo]
       description: To see the BanVote help.
+    yes:
+      usage: /yes - to vote Yes
+      description: Vote Command. Vote for YES
+    no:
+      usage: /no - to vote No
+      description: Vote Command. Vote for NO
 permissions:
     banvote.admin:
         default: op

@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import syam.VoteBan.Commands.VoteCommand;
 import syam.VoteBan.Vote.Vote;
+import syam.VoteBan.VoteActions.BanHandler;
 
 public class VoteBan extends JavaPlugin{
 	// Logger
@@ -19,6 +21,7 @@ public class VoteBan extends JavaPlugin{
 
 	// Private classes
 	private ConfigurationManager config;
+	private BanHandler banHandler;
 
 	// Public variable
 	public HashMap<String, Vote> votes;
@@ -42,8 +45,43 @@ public class VoteBan extends JavaPlugin{
 		}
 
 		// コマンド登録
-		getServer().getPluginCommand("vote").setExecutor(new VoteBanCommand(this));
+		getServer().getPluginCommand("vote").setExecutor(new VoteCommand(this));
+		getServer().getPluginCommand("yes").setExecutor(new VoteCommand(this));
+		getServer().getPluginCommand("no").setExecutor(new VoteCommand(this));
 		log.info(logPrefix+ "Initialized Command.");
+
+		// BANを行うプラグインの決定とハンドラ初期化
+		banHandler = new BanHandler(this);
+		boolean gban = config.isGlobalBan;
+		switch (banHandler.setupBanHandler(this)){
+			case VANILLA:
+				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
+				break;
+			case MCBANS3:
+				log.info(logPrefix+"MCBans 3.x plugin found, using that.");
+				if (gban)
+					log.info(logPrefix+"Enabled Global BAN!");
+				else
+					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
+				break;
+			case GLIZER:
+				log.info(logPrefix+"glizer plugin found, using that.");
+				if (gban)
+					log.info(logPrefix+"Disabled Global BAN. Using local type BAN.");
+				break;
+			case EASYBAN:
+				log.info(logPrefix+"EasyBan plugin found, using that.");
+				break;
+			case ULTRABAN:
+				log.info(logPrefix+"UltraBan plugin found, using that.");
+				break;
+			case DYNBAN:
+				log.info(logPrefix+"DynamicBan plugin found, using that.");
+				break;
+			default:
+				log.warning(logPrefix+"Error occurred on setupBanHandler (Honeychest.class)");
+				break;
+		}
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
@@ -66,6 +104,14 @@ public class VoteBan extends JavaPlugin{
 	 */
 	public ConfigurationManager getConfigs(){
 		return config;
+	}
+
+	/**
+	 * BANハンドラを返す
+	 * @return BanHandler
+	 */
+	public BanHandler getBansHandler(){
+		return banHandler;
 	}
 
 	/**
