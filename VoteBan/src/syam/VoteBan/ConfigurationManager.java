@@ -27,7 +27,7 @@ public class ConfigurationManager {
 	// 設定項目
 	/* Basic Configs */
 	// デフォルトの投票受付時間
-	public int voteTimeInMinutes = new Integer(3);
+	public int voteTimeInSeconds = new Integer(180);
 	// 設定ここまで
 
 	/**
@@ -57,7 +57,7 @@ public class ConfigurationManager {
 
 		// 項目取得
 		/* Basic Configs */
-		voteTimeInMinutes = plugin.getConfig().getInt("VoteTimeInMinutes", 3);
+		voteTimeInSeconds = plugin.getConfig().getInt("VoteTimeInSeconds", 180);
 	}
 
 	/**

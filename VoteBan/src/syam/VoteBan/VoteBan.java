@@ -1,9 +1,13 @@
 package syam.VoteBan;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import syam.VoteBan.Vote.Vote;
 
 public class VoteBan extends JavaPlugin{
 	// Logger
@@ -15,6 +19,9 @@ public class VoteBan extends JavaPlugin{
 
 	// Private classes
 	private ConfigurationManager config;
+
+	// Public variable
+	public HashMap<String, Vote> votes;
 
 	// Instance
 	private static VoteBan instance;

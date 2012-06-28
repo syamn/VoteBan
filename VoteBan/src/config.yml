@@ -4,5 +4,5 @@
 #==================#
 #   Basic Config   #
 #==================#
-# Default time for waiting votes (default: 3)
-VoteTimeInMinutes: 3
+# Default time for waiting votes (default: 180)
+VoteTimeInSeconds: 30
