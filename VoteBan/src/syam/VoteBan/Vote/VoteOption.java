@@ -11,3 +11,4 @@ public enum VoteOption {
 	ABSTENTION, // 棄権
 	INVALID // 無効
 }
+

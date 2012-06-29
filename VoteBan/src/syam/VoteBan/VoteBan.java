@@ -7,9 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import syam.VoteBan.Commands.NoCommand;
 import syam.VoteBan.Commands.VoteCommand;
-import syam.VoteBan.Commands.YesCommand;
 import syam.VoteBan.Vote.Vote;
 import syam.VoteBan.VoteActions.BanHandler;
 
@@ -48,8 +46,6 @@ public class VoteBan extends JavaPlugin{
 
 		// コマンド登録
 		getServer().getPluginCommand("vote").setExecutor(new VoteCommand(this));
-		getServer().getPluginCommand("yesvote").setExecutor(new YesCommand(this));
-		getServer().getPluginCommand("novote").setExecutor(new NoCommand(this));
 		log.info(logPrefix+ "Initialized Command.");
 
 		// BANを行うプラグインの決定とハンドラ初期化

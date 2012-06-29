@@ -3,8 +3,6 @@ package syam.VoteBan.Commands;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,20 +10,27 @@ import syam.VoteBan.Actions;
 import syam.VoteBan.VoteBan;
 import syam.VoteBan.Vote.Vote;
 import syam.VoteBan.Vote.VoteOption;
+import syam.VoteBan.Vote.VoteType;
 
-public class YesCommand implements CommandExecutor{
+public class VoterCommands {
 	public final static Logger log = VoteBan.log;
 	public final static String logPrefix = VoteBan.logPrefix;
 	public final static String msgPrefix = VoteBan.msgPrefix;
 
 	private final VoteBan plugin;
-	public YesCommand(final VoteBan plugin){
+	public VoterCommands(final VoteBan plugin, final CommandSender sender, final VoteOption option, final String[] args){
 		this.plugin = plugin;
+		run(sender, option, args);
 	}
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args){
-		// yes コマンド
+	/**
+	 * 投票コマンドが呼ばれた - /vote (yes|no) [player]
+	 * @param sender CommandSender
+	 * @param option VoteOption
+	 * @param args args[]
+	 * @return true
+	 */
+	private boolean run(final CommandSender sender, final VoteOption option, final String[] args){
 		// コンソールチェック
 		if (!(sender instanceof Player)){
 			Actions.message(sender, null, "&cThis command cannot use from console!");
@@ -35,6 +40,12 @@ public class YesCommand implements CommandExecutor{
 
 		if(plugin.votes.size() < 1){
 			Actions.message(null, player, "&c現在進行中の投票はありません");
+			return true;
+		}
+
+		// 投票オプション判定
+		if (option == VoteOption.INVALID || option == VoteOption.ABSTENTION){
+			Actions.message(null, player, "&c無効な投票種類です！");
 			return true;
 		}
 
@@ -50,10 +61,10 @@ public class YesCommand implements CommandExecutor{
 			}
 
 			// 賛成投票
-			vote.voters.put(player, VoteOption.YES);
+			vote.voters.put(player, option);
 
 			// メッセージ表示
-			Actions.message(null, player, "&a投票に賛成しました！");
+			Actions.message(null, player, "&a投票に"+getOptionName(option)+"投票しました！");
 			return true;
 		}
 
@@ -63,5 +74,29 @@ public class YesCommand implements CommandExecutor{
 			Actions.message(null, player, "&a2つ以上の同時進行投票には未対応です");
 			return true;
 		}
+	}
+
+	/**
+	 * VoteOptionのオプション日本語名を得る
+	 * @param option VoteOption
+	 * @return 日本語名
+	 */
+	private String getOptionName(final VoteOption option){
+		String s = "";
+
+		switch (option){
+			case YES:
+				s = "賛成"; break;
+			case NO:
+				s = "反対"; break;
+			case ABSTENTION:
+				s = "棄権"; break;
+			case INVALID:
+				s = "無効"; break;
+			default:
+				s = "null"; break;
+		}
+
+		return s;
 	}
 }
