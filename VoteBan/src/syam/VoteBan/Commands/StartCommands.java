@@ -1,5 +1,6 @@
 package syam.VoteBan.Commands;
 
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -9,9 +10,11 @@ import org.bukkit.entity.Player;
 
 import syam.VoteBan.Actions;
 import syam.VoteBan.VoteBan;
+import syam.VoteBan.Util.Util;
 import syam.VoteBan.Vote.Vote;
 import syam.VoteBan.Vote.VoteOption;
 import syam.VoteBan.Vote.VoteType;
+import syam.VoteBan.VoteActions.BanMethod;
 
 public class StartCommands {
 	public final static Logger log = VoteBan.log;
@@ -49,6 +52,12 @@ public class StartCommands {
 				Actions.message(sender, null, "&c理由を記入してください！");
 				return true;
 			}
+			// 人数チェック
+			if (plugin.getConfigs().voteStartMinPlayers > plugin.getServer().getOnlinePlayers().length){
+				Actions.message(sender, null, "&c投票開始に必要なオンライン人数が足りません！"
+						+"("+plugin.getServer().getOnlinePlayers().length +"/"+plugin.getConfigs().voteStartMinPlayers+")");
+				return true;
+			}
 
 			// 対象プレイヤーチェック
 			OfflinePlayer checkTarget = Bukkit.getServer().getOfflinePlayer(args[1]);
@@ -63,6 +72,16 @@ public class StartCommands {
 			int len = args.length;
 			for (int i = 4; len >= i; i++){
 				reason = reason + " " + args[i-1];
+			}
+
+			// MCBans用に全角文字のチェック
+			try {
+				if (plugin.getBansHandler().getBanMethod() == BanMethod.MCBANS3 && Util.containsZen(reason)){
+					Actions.message(null, player, "&c理由は英語で記述してください");
+					return true;
+				}
+			} catch (UnsupportedEncodingException ex) {
+				ex.printStackTrace();
 			}
 
 			// 既にそのプレイヤーへの投票が進行中でないかチェック

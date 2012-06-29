@@ -6,5 +6,12 @@
 #==================#
 # Default time for waiting votes (default: 180)
 VoteTimeInSeconds: 30
+# Minimum Players when starting any vote (default: 4)
+VoteStartMinPlayers: 4
+
+#=================#
+#   Bans Config   #
+#=================#
 # Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
+# (default: false)
 GlobalBan: false

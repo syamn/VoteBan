@@ -147,7 +147,6 @@ public class BanHandler {
 				break;
 		}
 	}
-
 	/**
 	 * プレイヤーをKickする
 	 * @param player Kick対象のプレイヤー
@@ -180,6 +179,14 @@ public class BanHandler {
 				log.warning(logPrefix+"Error occurred on kicking player (BanHandler.class)");
 				break;
 		}
+	}
+
+	/**
+	 * BanMethodを返す
+	 * @return BanMethod
+	 */
+	public BanMethod getBanMethod(){
+		return banMethod;
 	}
 
 	/**

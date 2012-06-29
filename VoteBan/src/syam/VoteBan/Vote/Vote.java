@@ -115,6 +115,12 @@ public class Vote {
 			result = VoteResult.DENIED;
 		}
 
+		// 賛成票が1に満たない場合は拒否
+		if (yes < 1){
+			result = VoteResult.DENIED;
+		}
+
+		// 結果で処理を分ける
 		finished(result);
 	}
 

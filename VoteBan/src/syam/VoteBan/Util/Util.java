@@ -1,5 +1,7 @@
 package syam.VoteBan.Util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -53,5 +55,22 @@ public class Util {
 	        return fileName.substring(point + 1);
 	    }
 	    return fileName;
+	}
+
+	/**
+	 * 文字列の中に全角文字が含まれているか判定
+	 * @param s 判定する文字列
+	 * @return 1文字でも全角文字が含まれていればtrue 含まれていなければfalse
+	 * @throws UnsupportedEncodingException
+	 */
+	public static boolean containsZen(String s)
+			throws UnsupportedEncodingException {
+		for (int i = 0; i < s.length(); i++) {
+			String s1 = s.substring(i, i + 1);
+			if (URLEncoder.encode(s1,"MS932").length() >= 4) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
