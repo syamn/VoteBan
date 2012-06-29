@@ -53,7 +53,7 @@ public class Vote {
 
 		// 投票ID作成 (playername-yyMMdd-HHmmss);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-HHmmss");
-		this.VoteID = target.getName() + "-" + sdf.format(new Date());
+		this.VoteID = target.getName() + "_" + sdf.format(new Date());
 
 		// 投票データ設定
 		this.target = target;
@@ -66,12 +66,18 @@ public class Vote {
 	 * 投票を開始する
 	 */
 	public void start(){
+		int sec = plugin.getConfigs().voteTimeInSeconds;
 		// メッセージ表示
 		Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票を'&6"+starter.getName()+"&d'が開始しました");
 		Actions.broadcastMessage(" &d理由: &f"+reason);
+		Actions.broadcastMessage(" &c"+sec+"秒&d以内に投票を行ってください | 賛成: &f/vote yes &d| &d反対: &f/vote no");
 
 		// ロギング
-		Actions.deflog(starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
+		if (plugin.getConfigs().logDetailFlag && plugin.getConfigs().logToFileFlag){
+			Actions.log(plugin.getConfigs().logFilePath,
+					starter.getName()+ " Started "+type.name()+" Vote against "+target.getName()+" VoteID: "+VoteID);
+		}
+		Actions.deflog(starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
 		Actions.deflog("Reason: "+reason);
 		log("========================================");
 		log(" "+starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
@@ -254,7 +260,6 @@ public class Vote {
 			// スタート
 			public void run(){
 				// 指定した時間が経過した
-				log("Vote time expired! Checking vote result..");
 				checkvotes();
 			}
 		}, voteTimeInSeconds * 20L); // 設定秒 * 20(tics)

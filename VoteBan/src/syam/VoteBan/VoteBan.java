@@ -87,7 +87,7 @@ public class VoteBan extends JavaPlugin{
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("["+pdfFile.getName()+"] version"+pdfFile.getVersion()+" is enabled!");
+		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is enabled!");
 	}
 	/**
 	 * プラグイン停止処理
@@ -95,7 +95,7 @@ public class VoteBan extends JavaPlugin{
 	public void onDisable(){
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
-		log.info("["+pdfFile.getName()+"] version"+pdfFile.getVersion()+" is disabled!");
+		log.info("["+pdfFile.getName()+"] version "+pdfFile.getVersion()+" is disabled!");
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class VoteBan extends JavaPlugin{
 		    Metrics metrics = new Metrics(this);
 		    metrics.start();
 		} catch (IOException ex) {
-			log.warning("cant send metrics data!");
+			log.warning("cannot send metrics data!");
 		    ex.printStackTrace();
 		}
 	}

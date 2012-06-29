@@ -43,7 +43,7 @@ public class StartCommands {
 			}
 			Player player = (Player)sender;
 			// 権限チェック
-			if (!sender.hasPermission("banvote.startvote.ban")){
+			if (!sender.hasPermission("voteban.startvote."+type.name().toLowerCase())){
 				Actions.message(sender, null, "&cYou don't have permission to use this!");
 				return true;
 			}
@@ -65,8 +65,14 @@ public class StartCommands {
 				Actions.message(sender, null, "&cそのプレイヤーはオフラインです！");
 				return true;
 			}
-
 			Player target = (Player)checkTarget;
+
+			// 自分自身のチェック
+			if (target == player){
+				Actions.message(sender, null, "&c自分を投票することはできません！");
+				return true;
+			}
+
 			// 理由メッセージ結合
 			String reason = args[2];
 			int len = args.length;
@@ -94,7 +100,7 @@ public class StartCommands {
 
 			// TODO: 開発後このチェックを削除する
 			if (plugin.votes.size() > 0){
-				Actions.message(sender, null, "&c既に進行中の投票があります！投票の進行には未対応です！");
+				Actions.message(sender, null, "&c既に進行中の投票があります！投票の同時進行には未対応です！");
 				return true;
 			}
 

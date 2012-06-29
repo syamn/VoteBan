@@ -5,11 +5,11 @@
 #   Basic Config   #
 #==================#
 # Default time for waiting votes (default: 180)
-VoteTimeInSeconds: 30
+VoteTimeInSeconds: 180
 # Accept Percentage (default: 60)
-Percentage: 60
-# Minimum Players when starting any vote (default: 4)
-VoteStartMinPlayers: 4
+Percentage: 60.0
+# Minimum Players when starting any vote (default: 5)
+VoteStartMinPlayers: 5
 
 #====================#
 #   Logging Config   #
@@ -32,7 +32,7 @@ DetailDirectory: plugins/VoteBan/detail/
 GlobalBan: false
 # Use fixed BAN reason
 UseFixedBanReason: true
-BanReason: 'Accepted BAN Vote! (!perc!:!yes!)'
+BanReason: 'Accepted BAN Vote! (!perc!: !yes!)'
 
 #==================#
 #   DO NOT TOUCH   #

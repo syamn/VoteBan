@@ -13,12 +13,12 @@ commands:
       aliases: [vo]
       description: To see the BanVote help.
 permissions:
-    banvote.admin:
+    voteban.admin:
         default: op
         description: Can administer VoteBan commands.
-    banvote.startvote.ban:
+    voteban.startvote.ban:
         default: op
         description: Can starting Vote for Banning player.
-    banvote.startvote.kick:
+    voteban.startvote.kick:
         default: op
         description: Can starting Vote for Kicking player.

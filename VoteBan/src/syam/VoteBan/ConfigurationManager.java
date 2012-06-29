@@ -37,7 +37,7 @@ public class ConfigurationManager {
 	// デフォルトの投票受付時間
 	public int voteTimeInSeconds = new Integer(180);
 	public double voteAcceptPerc = new Double(60.0);
-	public int voteStartMinPlayers = new Integer(4);
+	public int voteStartMinPlayers = new Integer(5);
 
 	/* Logging Configs */
 	public boolean logToFileFlag = new Boolean(true);
@@ -76,11 +76,13 @@ public class ConfigurationManager {
 			log.info(logPrefix+ "config.yml is not found! Created default config.yml!");
 		}
 
+		plugin.reloadConfig();
+
 		// 項目取得
 		/* Basic Configs */
 		voteTimeInSeconds = plugin.getConfig().getInt("VoteTimeInSeconds", 180);
 		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 60.0);
-		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 4);
+		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 5);
 
 		/* Logging Configs */
 		logToFileFlag = plugin.getConfig().getBoolean("LogToFile", true);

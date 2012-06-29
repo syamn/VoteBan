@@ -200,7 +200,7 @@ public class Actions {
 	 */
 	public static void deflog(String line){
 		// 設定確認
-		if (VoteBan.getInstance().getConfigs().logToFileFlag){
+		if (VoteBan.getInstance().getConfigs().logToFileFlag && !VoteBan.getInstance().getConfigs().logDetailFlag){
 			String logPath = VoteBan.getInstance().getConfigs().logFilePath;
 			log(logPath, line);
 		}
