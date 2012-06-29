@@ -11,6 +11,14 @@ Percentage: 60
 # Minimum Players when starting any vote (default: 4)
 VoteStartMinPlayers: 4
 
+#====================#
+#   Logging Config   #
+#====================#
+# Default time for waiting votes (default: 180)
+LogToFile: true
+# LogFilePath
+logPath: plugins/VoteBan/vote.log
+
 #=================#
 #   Bans Config   #
 #=================#

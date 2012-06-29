@@ -24,6 +24,10 @@ public class ConfigurationManager {
 
 	private static File pluginDir = new File("plugins", "VoteBan");
 
+	// デフォルトの設定定数
+	private final String defaultLogPath = "plugins/VoteBan/vote.log";
+	private final String defaultFixedReason = "Accepted BAN Vote! (!perc!:!yes!)";
+
 	// 設定項目
 	/* Basic Configs */
 	// デフォルトの投票受付時間
@@ -31,10 +35,14 @@ public class ConfigurationManager {
 	public double voteAcceptPerc = new Double(60.0);
 	public int voteStartMinPlayers = new Integer(4);
 
+	/* Logging Configs */
+	public boolean logToFileFlag = new Boolean(true);
+	public String logFilePath = defaultLogPath;
+
 	/* Bans Configs */
 	public boolean isGlobalBan = new Boolean(false);
 	public boolean fixedReasonFlag = new Boolean(true);
-	public String fixedReason = "Accepted BAN Vote! (!perc!:!yes!)";
+	public String fixedReason = defaultFixedReason;
 	// 設定ここまで
 
 	/**
@@ -68,10 +76,14 @@ public class ConfigurationManager {
 		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 60.0);
 		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 4);
 
+		/* Logging Configs */
+		logToFileFlag = plugin.getConfig().getBoolean("LogToFile", true);
+		logFilePath = plugin.getConfig().getString("logPath", defaultLogPath);
+
 		/* Bans Configs */
 		isGlobalBan = plugin.getConfig().getBoolean("GlobalBan", false);
 		fixedReasonFlag = plugin.getConfig().getBoolean("UseFixedBanReason", true);
-		fixedReason = plugin.getConfig().getString("BanReason", "Accepted BAN Vote! (!perc!:!yes!)");
+		fixedReason = plugin.getConfig().getString("BanReason", defaultFixedReason);
 	}
 
 	/**

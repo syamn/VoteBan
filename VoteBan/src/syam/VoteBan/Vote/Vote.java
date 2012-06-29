@@ -58,10 +58,13 @@ public class Vote {
 	 * 投票を開始する
 	 */
 	public void start(){
-
 		// メッセージ表示
 		Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票を'&6"+starter.getName()+"&d'が開始しました");
 		Actions.broadcastMessage(" &d理由: &f"+reason);
+
+		// ロギング
+		Actions.deflog(starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
+		Actions.deflog("Reason: "+reason);
 
 		// タイマー起動
 		timer();
@@ -168,6 +171,11 @@ public class Vote {
 				// 投票キャンセル 何もしない
 				break;
 		}
+
+		// ロギング
+		int total = yes + no + abs + invalid;
+		Actions.deflog(type.name()+" Vote against "+target.getName()+" Finished. Result: "+result.name());
+		Actions.deflog("Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);
 
 		// 終了
 		remove();
