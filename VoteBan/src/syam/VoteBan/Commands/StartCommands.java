@@ -76,7 +76,9 @@ public class StartCommands {
 
 			// MCBans用に全角文字のチェック
 			try {
-				if (plugin.getBansHandler().getBanMethod() == BanMethod.MCBANS3 && Util.containsZen(reason)){
+				if (!plugin.getConfigs().fixedReasonFlag &&
+						plugin.getBansHandler().getBanMethod() == BanMethod.MCBANS3 &&
+						Util.containsZen(reason)){
 					Actions.message(null, player, "&c理由は英語で記述してください");
 					return true;
 				}

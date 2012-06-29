@@ -180,7 +180,14 @@ public class Vote {
 		switch (type){
 			// BAN
 			case BAN:
-				plugin.getBansHandler().ban(target, starter.getName(), reason);
+				// 設定フラグの参照
+				String BanReason = reason;
+				if (plugin.getConfigs().fixedReasonFlag){
+					BanReason = plugin.getConfigs().fixedReason;
+					BanReason = BanReason.replaceAll("!perc!", yesPerc+"%");
+					BanReason = BanReason.replaceAll("!yes!", String.valueOf(yes));
+				}
+				plugin.getBansHandler().ban(target, starter.getName(), BanReason);
 				break;
 
 			// Kick

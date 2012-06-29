@@ -17,3 +17,6 @@ VoteStartMinPlayers: 4
 # Set to true for MCBans/glizer global bans. Be sure to follow their guidelines
 # (default: false)
 GlobalBan: false
+# Use fixed BAN reason
+UseFixedBanReason: true
+BanReason: 'Accepted BAN Vote! (!perc!:!yes!)'

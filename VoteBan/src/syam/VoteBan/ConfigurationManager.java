@@ -30,7 +30,11 @@ public class ConfigurationManager {
 	public int voteTimeInSeconds = new Integer(180);
 	public double voteAcceptPerc = new Double(60.0);
 	public int voteStartMinPlayers = new Integer(4);
+
+	/* Bans Configs */
 	public boolean isGlobalBan = new Boolean(false);
+	public boolean fixedReasonFlag = new Boolean(true);
+	public String fixedReason = "Accepted BAN Vote! (!perc!:!yes!)";
 	// 設定ここまで
 
 	/**
@@ -63,7 +67,11 @@ public class ConfigurationManager {
 		voteTimeInSeconds = plugin.getConfig().getInt("VoteTimeInSeconds", 180);
 		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 60.0);
 		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 4);
+
+		/* Bans Configs */
 		isGlobalBan = plugin.getConfig().getBoolean("GlobalBan", false);
+		fixedReasonFlag = plugin.getConfig().getBoolean("UseFixedBanReason", true);
+		fixedReason = plugin.getConfig().getString("BanReason", "Accepted BAN Vote! (!perc!:!yes!)");
 	}
 
 	/**
