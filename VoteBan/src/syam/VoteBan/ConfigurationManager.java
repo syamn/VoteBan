@@ -28,6 +28,7 @@ public class ConfigurationManager {
 	/* Basic Configs */
 	// デフォルトの投票受付時間
 	public int voteTimeInSeconds = new Integer(180);
+	public double voteAcceptPerc = new Double(60.0);
 	public int voteStartMinPlayers = new Integer(4);
 	public boolean isGlobalBan = new Boolean(false);
 	// 設定ここまで
@@ -60,6 +61,7 @@ public class ConfigurationManager {
 		// 項目取得
 		/* Basic Configs */
 		voteTimeInSeconds = plugin.getConfig().getInt("VoteTimeInSeconds", 180);
+		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 60.0);
 		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 4);
 		isGlobalBan = plugin.getConfig().getBoolean("GlobalBan", false);
 	}

@@ -6,6 +6,8 @@
 #==================#
 # Default time for waiting votes (default: 180)
 VoteTimeInSeconds: 30
+# Accept Percentage (default: 60)
+Percentage: 60
 # Minimum Players when starting any vote (default: 4)
 VoteStartMinPlayers: 4
 

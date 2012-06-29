@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import syam.VoteBan.Actions;
 import syam.VoteBan.VoteBan;
+import syam.VoteBan.Util.Util;
 
 public class Vote {
 	public final static Logger log = VoteBan.log;
@@ -33,6 +34,8 @@ public class Vote {
 	int no = 0; 	// VoteOption.NO
 	int abs = 0;	// VoteOption.ABSTENTION
 	int invalid = 0;// else
+	// 賛成割合
+	double yesPerc = 0.0;
 
 	/**
 	 * コンストラクタ
@@ -90,8 +93,9 @@ public class Vote {
 	 * 投票者をチェックして、達しているか判定する
 	 */
 	public void checkvotes(){
-		// 成立に必要な人数を計算
-		int threshold = plugin.getServer().getOnlinePlayers().length / 2;
+		// 成立に必要な割合を取得
+		double threshold = plugin.getConfigs().voteAcceptPerc;
+		int onlines = plugin.getServer().getOnlinePlayers().length;
 
 		// 集計
 		for (Entry<Player, VoteOption> entry : voters.entrySet()) {
@@ -105,18 +109,20 @@ public class Vote {
 		}
 
 		// 未投票者は棄権にカウント
-		abs = plugin.getServer().getOnlinePlayers().length - voters.size();
+		abs = onlines - voters.size();
 
 		VoteResult result;
-		// 結果判定
-		if (yes >= threshold){
-			result = VoteResult.ACCEPTED;
-		}else{
-			result = VoteResult.DENIED;
+		yesPerc = Util.getPercent(yes, onlines);
+
+		// 賛成票が1に満たない場合は0%設定
+		if (yes < 1){
+			yesPerc = 0.0;
 		}
 
-		// 賛成票が1に満たない場合は拒否
-		if (yes < 1){
+		// 結果判定
+		if (yesPerc >= threshold){
+			result = VoteResult.ACCEPTED;
+		}else{
 			result = VoteResult.DENIED;
 		}
 
@@ -136,7 +142,7 @@ public class Vote {
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は拒否されました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
 				// 投票不成立 何もしない
 				break;
@@ -146,7 +152,7 @@ public class Vote {
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
 				// 投票成立 投票種類によって処理を行う
 				accepted();
@@ -157,7 +163,7 @@ public class Vote {
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+" - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
 
 				// 投票キャンセル 何もしない
 				break;

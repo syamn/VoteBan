@@ -2,6 +2,7 @@ package syam.VoteBan.Util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -72,5 +73,24 @@ public class Util {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * パーセンテージを求める
+	 * @param num
+	 * @param total 全体値
+	 * @return double パーセンテージ
+	 */
+	public static double getPercent(int num, int total){
+		// パーセンテージ計算
+		double perc = ((double) num / total) * 100;
+
+		// 小数点1桁に丸める
+		NumberFormat format = NumberFormat.getInstance();
+		format.setMaximumFractionDigits(1);
+
+		// 返す
+		perc = Double.valueOf(format.format(perc));
+		return perc;
 	}
 }
