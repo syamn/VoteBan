@@ -87,9 +87,8 @@ public class VoteCommand implements CommandExecutor{
 		Actions.message(sender, null, " &b<>&f = required, &b[]&f = optional");
 		Actions.message(sender, null, " /vote ban (name) (reason) &7- &fBan Voting");
 		Actions.message(sender, null, " /vote kick (name) (reason) &7- &Kick Voting");
-		Actions.message(sender, null, " /no &7- &fVoting for NO");
-		Actions.message(sender, null, " /yes &7- &fVoting for YES");
-		Actions.message(sender, null, " /no &7- &fVoting for NO");
+		Actions.message(sender, null, " /vote yes &7- &fVoting for YES");
+		Actions.message(sender, null, " /vote no &7- &fVoting for NO");
 		Actions.message(sender, null, " &7/vote reload - &fReloading config.yml");
 		Actions.message(sender, null, "&c===================================");
 
