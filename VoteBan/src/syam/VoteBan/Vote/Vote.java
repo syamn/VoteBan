@@ -1,5 +1,7 @@
 package syam.VoteBan.Vote;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -18,6 +20,8 @@ public class Vote {
 	private final VoteBan plugin;
 
 	// 投票に関するデータ
+	private String VoteID; // 一意な投票ID
+
 	private Player target; // 投票対象のプレイヤー
 	private Player starter; // 投票を開始したプレイヤー
 	private String reason; // 投票を開始した理由
@@ -47,6 +51,10 @@ public class Vote {
 	public Vote(final VoteBan plugin, Player target, Player starter, String reason, VoteType type){
 		this.plugin = plugin;
 
+		// 投票ID作成 (playername-yyMMdd-HHmmss);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-HHmmss");
+		this.VoteID = target.getName() + "-" + sdf.format(new Date());
+
 		// 投票データ設定
 		this.target = target;
 		this.starter = starter;
@@ -65,6 +73,10 @@ public class Vote {
 		// ロギング
 		Actions.deflog(starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
 		Actions.deflog("Reason: "+reason);
+		log("========================================");
+		log(" "+starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
+		log(" Vote Reason: "+reason);
+		log("========================================");
 
 		// タイマー起動
 		timer();
@@ -90,6 +102,18 @@ public class Vote {
 
 		// 投票可能
 		return true;
+	}
+
+	/**
+	 * 各投票ごとのログを取る
+	 * @param line
+	 */
+	public void log(String line){
+		// 設定確認
+		if (plugin.getConfigs().logDetailFlag){
+			String filepath = plugin.getConfigs().detailDirectory + VoteID + ".log";
+			Actions.log(filepath, line);
+		}
 	}
 
 	/**
@@ -176,6 +200,10 @@ public class Vote {
 		int total = yes + no + abs + invalid;
 		Actions.deflog(type.name()+" Vote against "+target.getName()+" Finished. Result: "+result.name());
 		Actions.deflog("Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);
+		log("========================================");
+		log(" Vote Finished. Result: "+result.name());
+		log(" Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);
+		log("========================================");
 
 		// 終了
 		remove();
@@ -226,6 +254,7 @@ public class Vote {
 			// スタート
 			public void run(){
 				// 指定した時間が経過した
+				log("Vote time expired! Checking vote result..");
 				checkvotes();
 			}
 		}, voteTimeInSeconds * 20L); // 設定秒 * 20(tics)

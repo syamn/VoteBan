@@ -26,6 +26,7 @@ public class ConfigurationManager {
 
 	// デフォルトの設定定数
 	private final String defaultLogPath = "plugins/VoteBan/vote.log";
+	private final String defaultDetailDirectory = "plugins/VoteBan/detail/";
 	private final String defaultFixedReason = "Accepted BAN Vote! (!perc!:!yes!)";
 
 	// 設定項目
@@ -38,6 +39,8 @@ public class ConfigurationManager {
 	/* Logging Configs */
 	public boolean logToFileFlag = new Boolean(true);
 	public String logFilePath = defaultLogPath;
+	public boolean logDetailFlag = new Boolean(true);
+	public String detailDirectory = defaultDetailDirectory;
 
 	/* Bans Configs */
 	public boolean isGlobalBan = new Boolean(false);
@@ -78,12 +81,17 @@ public class ConfigurationManager {
 
 		/* Logging Configs */
 		logToFileFlag = plugin.getConfig().getBoolean("LogToFile", true);
-		logFilePath = plugin.getConfig().getString("logPath", defaultLogPath);
+		logFilePath = plugin.getConfig().getString("LogPath", defaultLogPath);
+		logDetailFlag = plugin.getConfig().getBoolean("LogDetail", true);
+		detailDirectory = plugin.getConfig().getString("DetailDirectory", defaultDetailDirectory);
 
 		/* Bans Configs */
 		isGlobalBan = plugin.getConfig().getBoolean("GlobalBan", false);
 		fixedReasonFlag = plugin.getConfig().getBoolean("UseFixedBanReason", true);
 		fixedReason = plugin.getConfig().getString("BanReason", defaultFixedReason);
+
+		// 詳細ログ格納用ディレクトリを作成する
+		createDir(new File(detailDirectory));
 	}
 
 	/**

@@ -14,10 +14,15 @@ VoteStartMinPlayers: 4
 #====================#
 #   Logging Config   #
 #====================#
-# Default time for waiting votes (default: 180)
+# Default time for waiting votes (default: true)
 LogToFile: true
 # LogFilePath
-logPath: plugins/VoteBan/vote.log
+LogPath: plugins/VoteBan/vote.log
+
+# DetailVoteLog
+LogDetail: true
+# DetailLogDirectory
+DetailDirectory: plugins/VoteBan/detail/
 
 #=================#
 #   Bans Config   #

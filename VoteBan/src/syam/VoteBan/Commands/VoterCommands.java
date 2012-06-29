@@ -65,6 +65,7 @@ public class VoterCommands {
 
 			// メッセージ表示
 			Actions.message(null, player, "&a投票に"+getOptionName(option)+"投票しました！");
+			vote.log(" + Player "+player.getName()+ " Voted to "+option.name());
 			return true;
 		}
 
