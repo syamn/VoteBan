@@ -2,13 +2,16 @@ package syam.VoteBan;
 
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -90,6 +93,10 @@ public class ConfigurationManager {
 		fixedReasonFlag = plugin.getConfig().getBoolean("UseFixedBanReason", true);
 		fixedReason = plugin.getConfig().getString("BanReason", defaultFixedReason);
 
+		// 設定ファイルのバージョンチェックを行う
+		double version = plugin.getConfig().getDouble("Version");
+		checkver(version);
+
 		// 詳細ログ格納用ディレクトリを作成する
 		createDir(new File(detailDirectory));
 	}
@@ -124,6 +131,39 @@ public class ConfigurationManager {
 	}
 
 	/**
+	 * 設定ファイルのバージョンをチェックする
+	 * @param ver
+	 */
+	private void checkver(final double ver){
+		double configVersion = ver; // 設定ファイルのバージョン
+		double nowVersion = 0.1D; // プラグインのバージョン
+		try{
+			nowVersion = Double.parseDouble(VoteBan.getInstance().getDescription().getVersion());
+		}catch (NumberFormatException ex){
+			log.warning(logPrefix+ "Cannot parse version string!");
+		}
+
+		// 比較 設定ファイルのバージョンが古ければ config.yml を上書きする
+		if (configVersion < nowVersion){
+			// 先に古い設定ファイルをリネームする
+			String destName = "oldconfig-v"+configVersion+".yml";
+			String srcPath = new File(plugin.getDataFolder(), "config.yml").getPath();
+			String destPath = new File(plugin.getDataFolder(), destName).getPath();
+			try{
+				copyTransfer(srcPath, destPath);
+				log.info(logPrefix+ "Copied old config.yml to "+destName+"!");
+			}catch(Exception ex){
+				log.warning(logPrefix+ "Cannot copy old config.yml!");
+			}
+
+			// config.ymlと言語ファイルを強制コピー
+			extractResource("/config.yml", plugin.getDataFolder(), true, false);
+
+			log.info(logPrefix+ "Deleted existing configuration file and generate a new one!");
+		}
+	}
+
+	/**
 	 * リソースファイルをファイルに出力する
 	 * @param from 出力元のファイルパス
 	 * @param to 出力先のファイルパス
@@ -143,8 +183,8 @@ public class ConfigurationManager {
 			return;
 		}
 
-		// ファイルが既に存在して、そのファイルの最終変更日時がJarファイルより後ろなら、forceフラグが真の場合を除いて返す
-		if (of.exists() && of.lastModified() > getJarFile().lastModified() && !force){
+		// ファイルが既に存在する場合は、forceフラグがtrueでない限り展開しない
+		if (of.exists() && !force){
 			return;
 		}
 
@@ -203,6 +243,24 @@ public class ConfigurationManager {
 				if (writer != null)
 					writer.close();
 			}catch (Exception ex){}
+		}
+	}
+	/**
+	 * コピー元のパス[srcPath]から、コピー先のパス[destPath]へファイルのコピーを行います。
+	 * コピー処理にはFileChannel#transferToメソッドを利用します。
+	 * コピー処理終了後、入力・出力のチャネルをクローズします。
+	 * @param srcPath コピー元のパス
+	 * @param destPath  コピー先のパス
+	 * @throws IOException 何らかの入出力処理例外が発生した場合
+	 */
+	public static void copyTransfer(String srcPath, String destPath) throws IOException {
+		FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
+		FileChannel destChannel = new FileOutputStream(destPath).getChannel();
+		try {
+		    srcChannel.transferTo(0, srcChannel.size(), destChannel);
+		} finally {
+		    srcChannel.close();
+		    destChannel.close();
 		}
 	}
 

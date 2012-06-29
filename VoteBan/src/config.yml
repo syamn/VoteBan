@@ -33,3 +33,8 @@ GlobalBan: false
 # Use fixed BAN reason
 UseFixedBanReason: true
 BanReason: 'Accepted BAN Vote! (!perc!:!yes!)'
+
+#==================#
+#   DO NOT TOUCH   #
+#==================#
+Version: 0.1

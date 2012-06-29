@@ -1,5 +1,6 @@
 package syam.VoteBan;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -43,6 +44,9 @@ public class VoteBan extends JavaPlugin{
 			log.warning(logPrefix+"an error occured while trying to load the config file.");
 			ex.printStackTrace();
 		}
+
+		// Metricsセットアップ
+		setupMetrics();
 
 		// コマンド登録
 		getServer().getPluginCommand("vote").setExecutor(new VoteCommand(this));
@@ -92,6 +96,19 @@ public class VoteBan extends JavaPlugin{
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
 		log.info("["+pdfFile.getName()+"] version"+pdfFile.getVersion()+" is disabled!");
+	}
+
+	/**
+	 * Metricsセットアップ
+	 */
+	public void setupMetrics(){
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException ex) {
+			log.warning("cant send metrics data!");
+		    ex.printStackTrace();
+		}
 	}
 
 	/* getter */
