@@ -40,6 +40,8 @@ public class Vote {
 	int invalid = 0;// else
 	// 賛成割合
 	double yesPerc = 0.0;
+	// 投票割合
+	double votePerc = 0.0;
 
 	/**
 	 * コンストラクタ
@@ -71,6 +73,7 @@ public class Vote {
 		Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票を'&6"+starter.getName()+"&d'が開始しました");
 		Actions.broadcastMessage(" &d理由: &f"+reason);
 		Actions.broadcastMessage(" &c"+sec+"秒&d以内に投票を行ってください | 賛成: &f/vote yes &d| &d反対: &f/vote no");
+		Actions.broadcastMessage(" &d成立条件: &6投票率 &f"+plugin.getConfigs().voteNeedVoterPerc+"% 以上 &6 賛成率 &f"+plugin.getConfigs().voteAcceptPerc+"% 以上");
 
 		// ロギング
 		if (plugin.getConfigs().logDetailFlag && plugin.getConfigs().logToFileFlag){
@@ -80,7 +83,7 @@ public class Vote {
 		Actions.deflog(starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
 		Actions.deflog("Reason: "+reason);
 		log("========================================");
-		log(" "+starter.getName()+ "Started "+type.name()+" Vote against "+target.getName());
+		log(" "+starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
 		log(" Vote Reason: "+reason);
 		log("========================================");
 
@@ -128,6 +131,7 @@ public class Vote {
 	public void checkvotes(){
 		// 成立に必要な割合を取得
 		double threshold = plugin.getConfigs().voteAcceptPerc;
+		double needPerc = plugin.getConfigs().voteNeedVoterPerc;
 		int onlines = plugin.getServer().getOnlinePlayers().length;
 
 		// 集計
@@ -145,7 +149,7 @@ public class Vote {
 		abs = onlines - voters.size();
 
 		VoteResult result;
-		yesPerc = Util.getPercent(yes, onlines);
+		yesPerc = Util.getPercent(yes, yes+no);
 
 		// 賛成票が1に満たない場合は0%設定
 		if (yes < 1){
@@ -157,6 +161,12 @@ public class Vote {
 			result = VoteResult.ACCEPTED;
 		}else{
 			result = VoteResult.DENIED;
+		}
+
+		// 投票総数が一定数以下ならすべて無効
+		votePerc = Util.getPercent(yes + no, onlines);
+		if (votePerc < needPerc){
+			result = VoteResult.VOID;
 		}
 
 		// 結果で処理を分ける
@@ -175,7 +185,7 @@ public class Vote {
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は拒否されました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票不成立 何もしない
 				break;
@@ -185,18 +195,27 @@ public class Vote {
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票成立 投票種類によって処理を行う
 				accepted();
 				break;
 
 			// キャンセル
+			case VOID:
+				// メッセージ表示
+				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は無効です");
+				Actions.broadcastMessage(" &d投票理由: &f"+reason);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
+
+				// 投票キャンセル 何もしない
+				break;
+			// キャンセル
 			case CANCELLED:
 				// メッセージ表示
 				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
 				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs);
+				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票キャンセル 何もしない
 				break;

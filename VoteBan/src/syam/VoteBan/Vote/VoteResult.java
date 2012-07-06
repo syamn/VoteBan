@@ -8,5 +8,6 @@ package syam.VoteBan.Vote;
 public enum VoteResult {
 	ACCEPTED,	// 成立
 	DENIED,		// 拒否
+	VOID, // 無効
 	CANCELLED	// キャンセル
 }

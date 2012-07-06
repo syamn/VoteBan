@@ -36,7 +36,8 @@ public class ConfigurationManager {
 	/* Basic Configs */
 	// デフォルトの投票受付時間
 	public int voteTimeInSeconds = new Integer(180);
-	public double voteAcceptPerc = new Double(60.0);
+	public double voteAcceptPerc = new Double(70.0);
+	public double voteNeedVoterPerc = new Double(25.0);
 	public int voteStartMinPlayers = new Integer(5);
 
 	/* Logging Configs */
@@ -81,7 +82,8 @@ public class ConfigurationManager {
 		// 項目取得
 		/* Basic Configs */
 		voteTimeInSeconds = plugin.getConfig().getInt("VoteTimeInSeconds", 180);
-		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 60.0);
+		voteAcceptPerc = plugin.getConfig().getDouble("Percentage", 70.0);
+		voteNeedVoterPerc = plugin.getConfig().getDouble("NeedsVoterPercentage", 25.0);
 		voteStartMinPlayers = plugin.getConfig().getInt("VoteStartMinPlayers", 5);
 
 		/* Logging Configs */
