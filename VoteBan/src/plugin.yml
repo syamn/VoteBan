@@ -1,6 +1,6 @@
 ##  Plugin Information  ##
 name: VoteBan
-version: 0.2
+version: 0.3
 main: syam.VoteBan.VoteBan
 description: Vote for Banning Griefer!
 website: http://sakura-server.net/
