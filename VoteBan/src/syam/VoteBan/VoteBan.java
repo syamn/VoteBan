@@ -59,7 +59,7 @@ public class VoteBan extends JavaPlugin{
 			case VANILLA:
 				log.info(logPrefix+"Didn't Find ban plugin, using vanilla.");
 				break;
-			case MCBANS3:
+			case MCBANS:
 				log.info(logPrefix+"MCBans (version 3.8+) plugin found, using that.");
 				if (gban)
 					log.info(logPrefix+"Enabled Global BAN!");
