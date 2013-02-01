@@ -1,4 +1,4 @@
-package syam.VoteBan.Vote;
+package net.syamn.voteban.Vote;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.bukkit.entity.Player;
+import net.syamn.voteban.Actions;
+import net.syamn.voteban.VoteBan;
+import net.syamn.voteban.Util.Util;
 
-import syam.VoteBan.Actions;
-import syam.VoteBan.VoteBan;
-import syam.VoteBan.Util.Util;
+import org.bukkit.entity.Player;
 
 public class Vote {
 	public final static Logger log = VoteBan.log;

@@ -1,16 +1,15 @@
-package syam.VoteBan.Commands;
+package net.syamn.voteban.Commands;
 
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import net.syamn.voteban.Actions;
+import net.syamn.voteban.VoteBan;
+import net.syamn.voteban.Vote.Vote;
+import net.syamn.voteban.Vote.VoteOption;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import syam.VoteBan.Actions;
-import syam.VoteBan.VoteBan;
-import syam.VoteBan.Vote.Vote;
-import syam.VoteBan.Vote.VoteOption;
-import syam.VoteBan.Vote.VoteType;
 
 public class VoterCommands {
 	public final static Logger log = VoteBan.log;

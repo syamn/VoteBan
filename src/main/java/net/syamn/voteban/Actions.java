@@ -1,4 +1,4 @@
-package syam.VoteBan;
+package net.syamn.voteban;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -8,14 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import net.syamn.utils.file.TextFileHandler;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import syam.VoteBan.Util.TextFileHandler;
 
 public class Actions {
 	// Logger
@@ -176,7 +176,7 @@ public class Actions {
 	}
 
 	/****************************************/
-	// VoteBan
+	// net.syamn.voteban
 	/****************************************/
 
 	/****************************************/
@@ -188,7 +188,7 @@ public class Actions {
 	 * @param line ログ内容
 	 */
 	public static void log(String filepath, String line){
-		TextFileHandler r = new TextFileHandler(filepath);
+		TextFileHandler r = new net.syamn.utils.file.TextFileHandler(filepath);
 		try{
 			r.appendLine("[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "] " + line);
 		} catch (IOException ex) {}

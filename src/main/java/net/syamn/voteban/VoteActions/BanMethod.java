@@ -1,4 +1,4 @@
-package syam.VoteBan.VoteActions;
+package net.syamn.voteban.VoteActions;
 
 //BANを行う連携プラグインの列挙体
 public enum BanMethod {

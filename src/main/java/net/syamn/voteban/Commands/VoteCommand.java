@@ -1,6 +1,11 @@
-package syam.VoteBan.Commands;
+package net.syamn.voteban.Commands;
 
 import java.util.logging.Logger;
+
+import net.syamn.voteban.Actions;
+import net.syamn.voteban.VoteBan;
+import net.syamn.voteban.Vote.VoteOption;
+import net.syamn.voteban.Vote.VoteType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -8,12 +13,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import syam.VoteBan.Actions;
-import syam.VoteBan.VoteBan;
-import syam.VoteBan.Vote.Vote;
-import syam.VoteBan.Vote.VoteOption;
-import syam.VoteBan.Vote.VoteType;
 
 public class VoteCommand implements CommandExecutor{
 	public final static Logger log = VoteBan.log;

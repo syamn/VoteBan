@@ -1,22 +1,21 @@
-package syam.VoteBan;
+package net.syamn.voteban;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import org.bukkit.entity.Player;
+import net.syamn.voteban.Commands.VoteCommand;
+import net.syamn.voteban.Vote.Vote;
+import net.syamn.voteban.VoteActions.BanHandler;
+
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import syam.VoteBan.Commands.VoteCommand;
-import syam.VoteBan.Vote.Vote;
-import syam.VoteBan.VoteActions.BanHandler;
 
 public class VoteBan extends JavaPlugin{
 	// Logger
 	public final static Logger log = Logger.getLogger("Minecraft");
-	public final static String logPrefix = "[VoteBan] ";
-	public final static String msgPrefix = "&c[VoteBan] &f";
+	public final static String logPrefix = "[net.syamn.voteban] ";
+	public final static String msgPrefix = "&c[net.syamn.voteban] &f";
 
 	// Listener
 

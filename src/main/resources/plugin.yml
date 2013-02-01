@@ -1,12 +1,12 @@
 ##  Plugin Information  ##
 name: VoteBan
 version: 0.4
-main: syam.VoteBan.VoteBan
+main: net.syamn.voteban.VoteBan
 description: Vote for Banning Griefer!
 website: http://sakura-server.net/
 softdepend: [MCBans]
 ##  Original Author     ##
-author: syam
+author: syamn
 commands:
     vote:
       usage: /vote - to see the help

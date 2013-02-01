@@ -1,4 +1,4 @@
-package syam.VoteBan.Util;
+package net.syamn.voteban.Util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

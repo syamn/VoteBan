@@ -1,20 +1,19 @@
-package syam.VoteBan.Commands;
+package net.syamn.voteban.Commands;
 
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
+
+import net.syamn.voteban.Actions;
+import net.syamn.voteban.VoteBan;
+import net.syamn.voteban.Util.Util;
+import net.syamn.voteban.Vote.Vote;
+import net.syamn.voteban.Vote.VoteType;
+import net.syamn.voteban.VoteActions.BanMethod;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import syam.VoteBan.Actions;
-import syam.VoteBan.VoteBan;
-import syam.VoteBan.Util.Util;
-import syam.VoteBan.Vote.Vote;
-import syam.VoteBan.Vote.VoteOption;
-import syam.VoteBan.Vote.VoteType;
-import syam.VoteBan.VoteActions.BanMethod;
 
 public class StartCommands {
 	public final static Logger log = VoteBan.log;

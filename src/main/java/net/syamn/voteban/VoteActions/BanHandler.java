@@ -1,6 +1,10 @@
-package syam.VoteBan.VoteActions;
+package net.syamn.voteban.VoteActions;
 
 import java.util.logging.Logger;
+
+import net.syamn.voteban.Actions;
+import net.syamn.voteban.ConfigurationManager;
+import net.syamn.voteban.VoteBan;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -8,10 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.MCBansAPI;
-
-import syam.VoteBan.Actions;
-import syam.VoteBan.ConfigurationManager;
-import syam.VoteBan.VoteBan;
 
 public class BanHandler {
 	public final static Logger log = VoteBan.log;

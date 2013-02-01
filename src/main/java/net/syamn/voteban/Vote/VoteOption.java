@@ -1,4 +1,4 @@
-package syam.VoteBan.Vote;
+package net.syamn.voteban.Vote;
 
 /**
  * 投票要素

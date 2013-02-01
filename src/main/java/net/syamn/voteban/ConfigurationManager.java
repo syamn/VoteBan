@@ -1,4 +1,4 @@
-package syam.VoteBan;
+package net.syamn.voteban;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -25,11 +25,11 @@ public class ConfigurationManager {
 	private JavaPlugin plugin;
 	private FileConfiguration conf;
 
-	private static File pluginDir = new File("plugins", "VoteBan");
+	private static File pluginDir = new File("plugins", "net.syamn.voteban");
 
 	// デフォルトの設定定数
-	private final String defaultLogPath = "plugins/VoteBan/vote.log";
-	private final String defaultDetailDirectory = "plugins/VoteBan/detail/";
+	private final String defaultLogPath = "plugins/net.syamn.voteban/vote.log";
+	private final String defaultDetailDirectory = "plugins/net.syamn.voteban/detail/";
 	private final String defaultFixedReason = "Accepted BAN Vote! (!perc!:!yes!)";
 
 	// 設定項目
@@ -269,6 +269,6 @@ public class ConfigurationManager {
 	}
 
 	public static File getJarFile(){
-		return new File("plugins", "VoteBan.jar");
+		return new File("plugins", "net.syamn.voteban.jar");
 	}
 }
