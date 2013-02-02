@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import net.syamn.utils.LogUtil;
+import net.syamn.utils.Metrics;
 import net.syamn.voteban.Commands.VoteCommand;
 import net.syamn.voteban.Vote.Vote;
 import net.syamn.voteban.VoteActions.BanHandler;
@@ -35,6 +36,8 @@ public class VoteBan extends JavaPlugin {
      */
     public void onEnable() {
         instance = this;
+        LogUtil.init(this);
+        
         config = new ConfigurationManager(this);
 
         // 設定読み込み
@@ -44,10 +47,7 @@ public class VoteBan extends JavaPlugin {
             log.warning(logPrefix + "an error occured while trying to load the config file.");
             ex.printStackTrace();
         }
-
-        // Metricsセットアップ
-        setupMetrics();
-
+        
         // コマンド登録
         getServer().getPluginCommand("vote").setExecutor(new VoteCommand(this));
         log.info(logPrefix + "Initialized Command.");
@@ -87,6 +87,9 @@ public class VoteBan extends JavaPlugin {
         // メッセージ表示
         PluginDescriptionFile pdfFile = this.getDescription();
         log.info("[" + pdfFile.getName() + "] version " + pdfFile.getVersion() + " is enabled!");
+        
+        // Metricsセットアップ
+        setupMetrics();
     }
 
     /**
