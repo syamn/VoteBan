@@ -2,7 +2,7 @@ package net.syamn.voteban.VoteActions;
 
 import java.util.logging.Logger;
 
-import net.syamn.voteban.Actions;
+import net.syamn.utils.Util;
 import net.syamn.voteban.ConfigurationManager;
 import net.syamn.voteban.VoteBan;
 
@@ -104,7 +104,7 @@ public class BanHandler {
 			case VANILLA: // バニラ サポートプラグインが入っていない場合は通常のBAN処理
 				player.kickPlayer(reason);
 				// コンソールから ban (playername) 実行
-				Actions.executeCommandOnConsole("ban " + player.getName());
+				Util.executeCommandOnConsole("ban " + player.getName());
 				break;
 			case MCBANS: // MCBans
 				player.kickPlayer(reason);
@@ -199,9 +199,9 @@ public class BanHandler {
 	 */
 	private void ban_glizer(Player player, String reason){
 		if (config.isGlobalBan){ // グローバル
-			Actions.executeCommandOnConsole("globalban " + player.getName() + " " + reason);
+			Util.executeCommandOnConsole("globalban " + player.getName() + " " + reason);
 		}else{ // ローカル
-			Actions.executeCommandOnConsole("localban " + player.getName() + " " + reason);
+			Util.executeCommandOnConsole("localban " + player.getName() + " " + reason);
 		}
 	}
 	/**
@@ -210,7 +210,7 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void kick_glizer(Player player, String reason){
-		Actions.executeCommandOnConsole("kick " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("kick " + player.getName() + " " + reason);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void ban_EB(Player player, String reason){
-		Actions.executeCommandOnConsole("eban " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("eban " + player.getName() + " " + reason);
 	}
 	/**
 	 * EasyBanを使ってKickを行う
@@ -227,7 +227,7 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void kick_EB(Player player, String reason){
-		Actions.executeCommandOnConsole("ekick " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("ekick " + player.getName() + " " + reason);
 	}
 
 	/**
@@ -236,9 +236,9 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void ban_UB(Player player, String reason){
-		Actions.executeCommandOnConsole("ban " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("ban " + player.getName() + " " + reason);
 		// IPBANも可能
-		//Actions.executeCommandOnConsole("ipban " + player.getName() + " " + reason);
+		//Util.executeCommandOnConsole("ipban " + player.getName() + " " + reason);
 	}
 	/**
 	 * UltraBanを使ってKickを行う
@@ -246,7 +246,7 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void kick_UB(Player player, String reason){
-		Actions.executeCommandOnConsole("eban " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("eban " + player.getName() + " " + reason);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void ban_DynB(Player player, String reason){
-		Actions.executeCommandOnConsole("dynban " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("dynban " + player.getName() + " " + reason);
 	}
 	/**
 	 * DynamicBanを使ってKickを行う
@@ -263,6 +263,6 @@ public class BanHandler {
 	 * @param reason 理由
 	 */
 	private void kick_DynB(Player player, String reason){
-		Actions.executeCommandOnConsole("dynkick " + player.getName() + " " + reason);
+		Util.executeCommandOnConsole("dynkick " + player.getName() + " " + reason);
 	}
 }

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import net.syamn.voteban.Actions;
+import net.syamn.utils.LogUtil;
+import net.syamn.utils.Util;
 import net.syamn.voteban.VoteBan;
-import net.syamn.voteban.Util.Util;
 
 import org.bukkit.entity.Player;
 
@@ -70,18 +70,18 @@ public class Vote {
 	public void start(){
 		int sec = plugin.getConfigs().voteTimeInSeconds;
 		// メッセージ表示
-		Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票を'&6"+starter.getName()+"&d'が開始しました");
-		Actions.broadcastMessage(" &d理由: &f"+reason);
-		Actions.broadcastMessage(" &c"+sec+"秒&d以内に投票を行ってください | 賛成: &f/vote yes &d| &d反対: &f/vote no");
-		Actions.broadcastMessage(" &d成立条件: &6投票率 &f"+plugin.getConfigs().voteNeedVoterPerc+"% 以上 &6 賛成率 &f"+plugin.getConfigs().voteAcceptPerc+"% 以上");
+		Util.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票を'&6"+starter.getName()+"&d'が開始しました");
+		Util.broadcastMessage(" &d理由: &f"+reason);
+		Util.broadcastMessage(" &c"+sec+"秒&d以内に投票を行ってください | 賛成: &f/vote yes &d| &d反対: &f/vote no");
+		Util.broadcastMessage(" &d成立条件: &6投票率 &f"+plugin.getConfigs().voteNeedVoterPerc+"% 以上 &6 賛成率 &f"+plugin.getConfigs().voteAcceptPerc+"% 以上");
 
 		// ロギング
 		if (plugin.getConfigs().logDetailFlag && plugin.getConfigs().logToFileFlag){
-			Actions.log(plugin.getConfigs().logFilePath,
+			LogUtil.log(plugin.getConfigs().logFilePath,
 					starter.getName()+ " Started "+type.name()+" Vote against "+target.getName()+" VoteID: "+VoteID);
 		}
-		Actions.deflog(starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
-		Actions.deflog("Reason: "+reason);
+		plugin.deflog(starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
+		plugin.deflog("Reason: "+reason);
 		log("========================================");
 		log(" "+starter.getName()+ " Started "+type.name()+" Vote against "+target.getName());
 		log(" Vote Reason: "+reason);
@@ -99,13 +99,13 @@ public class Vote {
 	 */
 	public boolean canVote(Player player){
 		if (target == player){
-			Actions.message(null, player, "&c自分自身の投票に参加することはできません");
+			Util.message(player, "&c自分自身の投票に参加することはできません");
 			return false;
 		}
 		// TODO: 権限チェックを追加、投票可能者数で最終決定のパーセンテージを取る
 
 		if (voters.containsKey(player)){
-			Actions.message(null, player, "&cあなたは既に投票しています！");
+			Util.message(player, "&cあなたは既に投票しています！");
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class Vote {
 		// 設定確認
 		if (plugin.getConfigs().logDetailFlag){
 			String filepath = plugin.getConfigs().detailDirectory + VoteID + ".log";
-			Actions.log(filepath, line);
+			LogUtil.log(filepath, line);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class Vote {
 		abs = onlines - voters.size();
 
 		VoteResult result;
-		yesPerc = Util.getPercent(yes, yes+no);
+		yesPerc = Util.getPercent(yes, yes + no, 1);
 
 		// 賛成票が1に満たない場合は0%設定
 		if (yes < 1){
@@ -164,7 +164,7 @@ public class Vote {
 		}
 
 		// 投票総数が一定数以下ならすべて無効
-		votePerc = Util.getPercent(yes + no, onlines);
+		votePerc = Util.getPercent(yes + no, onlines, 1);
 		if (votePerc < needPerc){
 			result = VoteResult.VOID;
 		}
@@ -183,9 +183,9 @@ public class Vote {
 			// 拒否
 			case DENIED:
 				// メッセージ表示
-				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は拒否されました");
-				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
+			        Util.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は拒否されました");
+			        Util.broadcastMessage(" &d投票理由: &f"+reason);
+			        Util.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票不成立 何もしない
 				break;
@@ -193,9 +193,9 @@ public class Vote {
 			// 成立
 			case ACCEPTED:
 				// メッセージ表示
-				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
-				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
+			        Util.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は成立しました");
+			        Util.broadcastMessage(" &d投票理由: &f"+reason);
+			        Util.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票成立 投票種類によって処理を行う
 				accepted();
@@ -204,18 +204,18 @@ public class Vote {
 			// キャンセル
 			case VOID:
 				// メッセージ表示
-				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は無効です");
-				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
+    			        Util.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票は無効です");
+    			        Util.broadcastMessage(" &d投票理由: &f"+reason);
+    			        Util.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票キャンセル 何もしない
 				break;
 			// キャンセル
 			case CANCELLED:
 				// メッセージ表示
-				Actions.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
-				Actions.broadcastMessage(" &d投票理由: &f"+reason);
-				Actions.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
+			        Util.broadcastMessage("&c[Vote] &d'&6"+target.getName()+"&d'への &c"+type.name()+" &d投票はキャンセルされました");
+			        Util.broadcastMessage(" &d投票理由: &f"+reason);
+			        Util.broadcastMessage(" &6結果&f: "+result.name()+"["+yesPerc+"%] - "+"&c賛&f:"+yes+" / &b反&f:"+no+" / &6棄&f:"+abs+" | &d投票率: &f"+votePerc+"%");
 
 				// 投票キャンセル 何もしない
 				break;
@@ -223,8 +223,8 @@ public class Vote {
 
 		// ロギング
 		int total = yes + no + abs + invalid;
-		Actions.deflog(type.name()+" Vote against "+target.getName()+" Finished. Result: "+result.name());
-		Actions.deflog("Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);
+		plugin.deflog(type.name()+" Vote against "+target.getName()+" Finished. Result: "+result.name());
+		plugin.deflog("Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);
 		log("========================================");
 		log(" Vote Finished. Result: "+result.name());
 		log(" Percentage: "+yesPerc+"% - YES:"+yes+" NO:"+no+" ABS:"+abs+" INV:"+invalid+" - TOTAL: "+total);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import net.syamn.utils.LogUtil;
 import net.syamn.voteban.Commands.VoteCommand;
 import net.syamn.voteban.Vote.Vote;
 import net.syamn.voteban.VoteActions.BanHandler;
@@ -135,4 +136,10 @@ public class VoteBan extends JavaPlugin{
 	public static VoteBan getInstance(){
 		return instance;
 	}
+
+	public void deflog(String line){
+            if (config.logToFileFlag && !config.logDetailFlag){
+                    LogUtil.log(config.logFilePath, line);
+            }
+        }
 }

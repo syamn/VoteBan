@@ -3,7 +3,7 @@ package net.syamn.voteban.Commands;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import net.syamn.voteban.Actions;
+import net.syamn.utils.Util;
 import net.syamn.voteban.VoteBan;
 import net.syamn.voteban.Vote.Vote;
 import net.syamn.voteban.Vote.VoteOption;
@@ -32,19 +32,19 @@ public class VoterCommands {
 	private boolean run(final CommandSender sender, final VoteOption option, final String[] args){
 		// コンソールチェック
 		if (!(sender instanceof Player)){
-			Actions.message(sender, null, "&cThis command cannot use from console!");
+		        Util.message(sender, "&cThis command cannot use from console!");
 			return true;
 		}
 		Player player = (Player)sender;
 
 		if(plugin.votes.size() < 1){
-			Actions.message(null, player, "&c現在進行中の投票はありません");
+		        Util.message(sender, "&c現在進行中の投票はありません");
 			return true;
 		}
 
 		// 投票オプション判定
 		if (option == VoteOption.INVALID || option == VoteOption.ABSTENTION){
-			Actions.message(null, player, "&c無効な投票種類です！");
+		        Util.message(sender, "&c無効な投票種類です！");
 			return true;
 		}
 
@@ -63,15 +63,15 @@ public class VoterCommands {
 			vote.voters.put(player, option);
 
 			// メッセージ表示
-			Actions.message(null, player, "&a投票に"+getOptionName(option)+"投票しました！");
-			vote.log(" + Player "+player.getName()+ " Voted to "+option.name());
+			Util.message(player, "&a投票に" + getOptionName(option) + "投票しました！");
+			vote.log(" + Player "+player.getName()+ " Voted to " + option.name());
 			return true;
 		}
 
 		// TODO: 2つ以上投票が進行中の場合は対象者名が必要 /yes (targetname)
 		else{
 			// メッセージ表示
-			Actions.message(null, player, "&a2つ以上の同時進行投票には未対応です");
+		        Util.message(player, "&a2つ以上の同時進行投票には未対応です");
 			return true;
 		}
 	}

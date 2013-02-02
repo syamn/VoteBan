@@ -3,9 +3,9 @@ package net.syamn.voteban.Commands;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
-import net.syamn.voteban.Actions;
+import net.syamn.utils.StrUtil;
+import net.syamn.utils.Util;
 import net.syamn.voteban.VoteBan;
-import net.syamn.voteban.Util.Util;
 import net.syamn.voteban.Vote.Vote;
 import net.syamn.voteban.Vote.VoteType;
 import net.syamn.voteban.VoteActions.BanMethod;
@@ -37,38 +37,38 @@ public class StartCommands {
 		if (type != null){
 			// コンソールチェック
 			if (!(sender instanceof Player)){
-				Actions.message(sender, null, "&cThis command cannot use from console!");
+				Util.message(sender, "&cThis command cannot use from console!");
 				return true;
 			}
 			Player player = (Player)sender;
 			// 権限チェック
 			if (!sender.hasPermission("voteban.startvote."+type.name().toLowerCase())){
-				Actions.message(sender, null, "&cYou don't have permission to use this!");
+			    Util.message(sender, "&cYou don't have permission to use this!");
 				return true;
 			}
 			// 引数チェック
 			if (args.length < 3){
-				Actions.message(sender, null, "&c理由を記入してください！");
+			        Util.message(sender, "&c理由を記入してください！");
 				return true;
 			}
 			// 人数チェック
 			if (plugin.getConfigs().voteStartMinPlayers > plugin.getServer().getOnlinePlayers().length){
-				Actions.message(sender, null, "&c投票開始に必要なオンライン人数が足りません！"
-						+"("+plugin.getServer().getOnlinePlayers().length +"/"+plugin.getConfigs().voteStartMinPlayers+")");
+			    Util.message(sender, "&c投票開始に必要なオンライン人数が足りません！"
+						+"("+plugin.getServer().getOnlinePlayers().length + "/" + plugin.getConfigs().voteStartMinPlayers+")");
 				return true;
 			}
 
 			// 対象プレイヤーチェック
 			OfflinePlayer checkTarget = Bukkit.getServer().getOfflinePlayer(args[1]);
 			if (!checkTarget.isOnline()){
-				Actions.message(sender, null, "&cそのプレイヤーはオフラインです！");
+			        Util.message(sender, "&cそのプレイヤーはオフラインです！");
 				return true;
 			}
 			Player target = (Player)checkTarget;
 
 			// 自分自身のチェック
 			if (target == player){
-				Actions.message(sender, null, "&c自分を投票することはできません！");
+			        Util.message(sender, "&c自分を投票することはできません！");
 				return true;
 			}
 
@@ -83,8 +83,8 @@ public class StartCommands {
 			try {
 				if (!plugin.getConfigs().fixedReasonFlag &&
 						plugin.getBansHandler().getBanMethod() == BanMethod.MCBANS &&
-						Util.containsZen(reason)){
-					Actions.message(null, player, "&c理由は英語で記述してください");
+						StrUtil.containsZen(reason)){
+				        Util.message(player, "&c理由は英語で記述してください");
 					return true;
 				}
 			} catch (UnsupportedEncodingException ex) {
@@ -93,13 +93,13 @@ public class StartCommands {
 
 			// 既にそのプレイヤーへの投票が進行中でないかチェック
 			if (plugin.votes.containsKey(target.getName())){
-				Actions.message(sender, null, "&cそのプレイヤーへの投票は既に進行中です！");
+			        Util.message(sender, "&cそのプレイヤーへの投票は既に進行中です！");
 				return true;
 			}
 
 			// TODO: 開発後このチェックを削除する
 			if (plugin.votes.size() > 0){
-				Actions.message(sender, null, "&c既に進行中の投票があります！投票の同時進行には未対応です！");
+			        Util.message(sender, "&c既に進行中の投票があります！投票の同時進行には未対応です！");
 				return true;
 			}
 

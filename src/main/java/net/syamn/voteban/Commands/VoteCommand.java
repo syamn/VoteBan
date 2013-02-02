@@ -2,7 +2,7 @@ package net.syamn.voteban.Commands;
 
 import java.util.logging.Logger;
 
-import net.syamn.voteban.Actions;
+import net.syamn.utils.Util;
 import net.syamn.voteban.VoteBan;
 import net.syamn.voteban.Vote.VoteOption;
 import net.syamn.voteban.Vote.VoteType;
@@ -30,7 +30,7 @@ public class VoteCommand implements CommandExecutor{
 		if (args.length >= 1 && args[0].equalsIgnoreCase("reload")){
 			// 権限チェック
 			if (!sender.hasPermission("voteban.admin")){
-				Actions.message(sender, null, "&cYou don't have permission to use this!");
+			        Util.message(sender, "&cYou don't have permission to use this!");
 				return true;
 			}
 			try{
@@ -40,7 +40,7 @@ public class VoteCommand implements CommandExecutor{
 				ex.printStackTrace();
 				return true;
 			}
-			Actions.message(sender, null, "&aConfiguration reloaded!");
+			Util.message(sender, "&aConfiguration reloaded!");
 			return true;
 		}
 
@@ -81,15 +81,15 @@ public class VoteCommand implements CommandExecutor{
 		}
 
 		// コマンドヘルプを表示
-		Actions.message(sender, null, "&c===================================");
-		Actions.message(sender, null, "&bVoteBan Plugin version &3%version &bby syamn");
-		Actions.message(sender, null, " &b<>&f = required, &b[]&f = optional");
-		Actions.message(sender, null, " /vote ban (name) (reason) &7- &fBan Voting");
-		Actions.message(sender, null, " /vote kick (name) (reason) &7- &fKick Voting");
-		Actions.message(sender, null, " /vote yes &7- &fVoting for YES");
-		Actions.message(sender, null, " /vote no &7- &fVoting for NO");
-		Actions.message(sender, null, " &7/vote reload - &fReloading config.yml");
-		Actions.message(sender, null, "&c===================================");
+		Util.message(sender, "&c===================================");
+		Util.message(sender, "&bVoteBan Plugin version &3%version &bby syamn");
+		Util.message(sender, " &b<>&f = required, &b[]&f = optional");
+		Util.message(sender, " /vote ban (name) (reason) &7- &fBan Voting");
+		Util.message(sender, " /vote kick (name) (reason) &7- &fKick Voting");
+		Util.message(sender, " /vote yes &7- &fVoting for YES");
+		Util.message(sender, " /vote no &7- &fVoting for NO");
+		Util.message(sender, " &7/vote reload - &fReloading config.yml");
+		Util.message(sender, "&c===================================");
 
 		return true;
 	}
